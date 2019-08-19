@@ -8,12 +8,10 @@ int calculaQtdElementosArquivo (FILE *arq, int qtdElementos){
     while (!feof(arq))
     {
         result = fgets(Linha, 100, arq);
-        //printf("%s/", Linha);
         char * pch;
         pch = strtok (Linha," ");
         while (pch != NULL)
         {
-            //printf ("%s|",pch);
             if(strcmp(pch, "\n") != 0)
             {
                 qtdElementos++;
@@ -21,10 +19,6 @@ int calculaQtdElementosArquivo (FILE *arq, int qtdElementos){
             pch = strtok (NULL, " ");
         }
     }
-    //printf("\n");
-    //printf("%d", qtdElementos);
-    //printf("\n");
-    //printf("\n");
     return qtdElementos;
 }
 
@@ -126,4 +120,3 @@ int main()
     
     return 0;
 }
-
