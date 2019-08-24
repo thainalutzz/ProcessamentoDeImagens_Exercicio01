@@ -1,28 +1,22 @@
-#include <stdio.h>
+#include<stdio.h>
+#include<string.h>
 #include<math.h>
-#include <string.h>
+#include<stdlib.h>
 
 int calculaQtdElementosArquivo (FILE *arq, int qtdElementos){
-    char Linha[100];
-    char *result;
-    while (!feof(arq))
+    char ch;
+    while((ch=fgetc(arq))!= EOF)
     {
-        result = fgets(Linha, 100, arq);
-        char * pch;
-        pch = strtok (Linha," ");
-        while (pch != NULL)
+        if(ch != '\n' && ch != '\r')
         {
-            if(strcmp(pch, "\n") != 0)
-            {
-                qtdElementos++;
-            }
-            pch = strtok (NULL, " ");
+            qtdElementos++;
         }
     }
     return qtdElementos;
 }
 
 int calculaOrdemMatriz (int qtdElementos, int ordem){
+    //Verifica se o número é inteiro para saber se a matriz é quadrada
     if(sqrt(qtdElementos) == (int)sqrt(qtdElementos)){
         ordem = sqrt(qtdElementos);
         return ordem;
@@ -32,26 +26,112 @@ int calculaOrdemMatriz (int qtdElementos, int ordem){
     }
 }
 
-int main()
-{
-    FILE *arq;
-    FILE *arqFinal;
-    int qtdElementos = 0, ordem = 0;
-    int i=0;
-    int j=0;
-
-    //Abre o arquivo de Entrada com a Matriz Inicial
-    arq = fopen("entrada.txt", "r");
-    if (arq == NULL)  // Se houve erro na abertura
+void imprimeMatriz (int ordem, char matriz[ordem][ordem]){
+    int i=0, j=0;
+    for (i=0; i<ordem; i++)
     {
-        printf("O arquivo nao foi encontrado.\n");
-        return 0;
+        for (j=0; j<ordem; j++)
+        {
+            putchar(matriz[i][j]);
+            //printf("%c", matrizInicial[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+char preencheMatrizComArquivo (FILE *arq, int ordem, char matriz[ordem][ordem]){
+    arq = fopen("entrada.txt", "r");
+    char ch;
+    int i=0, j=0;
+
+    while (!feof(arq))
+    {
+        while((ch=fgetc(arq))!= EOF)
+        {
+            if(ch != '\n' && ch != '\r')
+            {
+                matriz[i][j] = ch;
+                if(j == ordem-1)
+                {
+                    j=0;
+                    i++;
+                }
+                else
+                {
+                    j++; 
+                }
+            }
+        }
     }
     
+    //Fecha o aquivo com a matriz inicial
+    fclose(arq);
+    return matriz;
+}
+
+char atualizaMatrizAuxiliar (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][ordem]){
+    int i=0, j=0;
+
+    for (i=0; i<ordem; i++)
+    {
+        for (j=0; j<ordem; j++)
+        {
+            matrizAuxiliar[i][j] = matriz[i][j];
+        }
+    }
+}
+
+void preencheMatrizTrocandoLinhasColunas (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][ordem]){
+    int i=0, j=0;
+    
+    for (i=0; i<ordem; i++)
+    {
+        for (j=0; j<ordem; j++)
+        {
+            matriz[j][i] = matrizAuxiliar[i][j];
+        }
+    }
+}
+
+void preencheMatrizSubstituindoCaractere (int ordem, char matriz[ordem][ordem], char caractereAntigo, char caractereNovo){
+    int i=0, j=0;
+    
+    for (i=0; i<ordem; i++)
+    {
+        for (j=0; j<ordem; j++)
+        {
+            if(matriz[i][j] == caractereAntigo)
+            {
+                matriz[i][j] = caractereNovo;
+            }
+        }
+    }
+}
+
+int main()
+{
+
+    //Abre o arquivo com a matriz inicial
+    FILE *arq;
+    arq = fopen("entrada.txt","r");
+    if(arq == NULL)
+    {
+     printf("Erro, nao foi possivel abrir o arquivo\n");
+     return 0;
+    }
+    
+    //Conta a quantidade de elementos na matriz
+    int qtdElementos = 0;
     qtdElementos = calculaQtdElementosArquivo(arq, qtdElementos);
+    
+    //Fecha o aquivo com a matriz inicial
+    fclose(arq);
+    
+    //Verifica se a matriz eh quadrada e valida a ordem
+    int ordem = 0;
     ordem = calculaOrdemMatriz(qtdElementos, ordem);
     if(ordem == 0){
-        printf("O arquivo nÃ£o contÃ©m uma matriz quadrada.");
+        printf("O arquivo nao contem uma matriz quadrada.");
         return 0;
     }
     if(ordem < 10 || ordem > 20){
@@ -60,65 +140,49 @@ int main()
     }
     
     //Preenche a Matriz Inicial
-    char *matrizInicial[ordem][ordem];
-    arq = fopen("entrada.txt", "r");
-    while (!feof(arq))
-    {
-	    for (i=0; i<ordem; i++)
-        {
-            for (j=0; j<ordem; j++)
-            {
-                fscanf(arq, "%s", &matrizInicial[i][j]);
-            }
-        }
-    }
+    char matriz[ordem][ordem];
+    matriz[ordem][ordem] = preencheMatrizComArquivo(arq, ordem, matriz);
+    
+    //Cria uma Matriz Axiliar igual a Matriz Inicial
+    char matrizAuxiliar[ordem][ordem];
+    atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
     
     //Imprime a Matriz Inicial
-    printf("MATRIZ INICIAL\n");
-    for (i=0; i<ordem; i++)
-    {
-        for (j=0; j<ordem; j++)
-        {
-            printf("%s ", &matrizInicial[i][j]);
-        }
-        printf("\n");
-    }
-
-    //Preenche a Matriz Final
-    char *matrizFinal[ordem][ordem];
-    for (i=0; i<ordem; i++)
-    {
-        for (j=0; j<ordem; j++)
-        {
-            matrizFinal[j][i] = matrizInicial[i][j];
-        }
-    }
-
-    //Imprime a Matriz Final
-    printf("\nMATRIZ FINAL\n");
-    for (i=0; i<ordem; i++)
-    {
-        for (j=0; j<ordem; j++)
-        {
-            printf("%s ", &matrizFinal[i][j]);
-        }
-        printf("\n");
-    }
-    fclose(arq);
-
-    //Cria e preenche o arquivo de Saida com a Matriz Final
-    arqFinal = fopen("saida.txt", "w");
-    for (i=0; i<ordem; i++)
-    {
-        for (j=0; j<ordem; j++)
-        {
-            fputc(matrizFinal[i][j], arqFinal);
-            fputc(' ', arqFinal);
-        }
-        fputc('\n', arqFinal);
-    }
+    printf(":: MATRIZ ORIGINAL ::\n");
+    imprimeMatriz(ordem, matriz);
+    printf(":::::::::::::::::::::\n");
     
-    fclose(arqFinal);
+    //A partir daqui fazer um menu
     
+    //Caso troca de linhas e colunas e colunas e linhas
+    //Imprime a Matriz Inicial
+    printf(":: MATRIZ ANTES ::\n");
+    imprimeMatriz(ordem, matriz);
+    printf(":::::::::::::::::::::\n");
+    preencheMatrizTrocandoLinhasColunas (ordem, matriz, matrizAuxiliar);
+    //Imprime a Matriz Alterada
+    printf(":: MATRIZ DEPOIS ::\n");
+    imprimeMatriz(ordem, matriz);
+    printf(":::::::::::::::::::::\n");
+    //Atualiza a Matriz Auxiliar com a nova Matriz alterada
+    atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+    
+    //Caso substitui caracter
+    //Imprime a Matriz Inicial
+    printf(":: MATRIZ ANTES ::\n");
+    imprimeMatriz(ordem, matriz);
+    printf(":::::::::::::::::::::\n");
+    char caractereAntigo;
+    char caractereNovo;
+    caractereAntigo = '2';
+    caractereNovo = 't';
+    preencheMatrizSubstituindoCaractere (ordem, matriz, caractereAntigo, caractereNovo);
+    //Imprime a Matriz Alterada
+    printf(":: MATRIZ DEPOIS ::\n");
+    imprimeMatriz(ordem, matriz);
+    printf(":::::::::::::::::::::\n");
+    //Atualiza a Matriz Auxiliar com a nova Matriz alterada
+    atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+
     return 0;
 }
