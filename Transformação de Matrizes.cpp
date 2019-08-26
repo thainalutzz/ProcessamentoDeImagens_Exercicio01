@@ -189,8 +189,12 @@ int main()
     printf(":::::::::::::::::::::\n");
     char caractereAntigo;
     char caractereNovo;
-    caractereAntigo = '2';
-    caractereNovo = 't';
+    printf("Digite o caractere a ser substituindo: ");
+    scanf("%c", &caractereAntigo);
+    printf("Digite o novo caractere: ");
+    scanf(" %c", &caractereNovo);
+    //caractereAntigo = '2';
+    //caractereNovo = 't';
     preencheMatrizSubstituindoCaractere (ordem, matriz, caractereAntigo, caractereNovo);
     //Imprime a Matriz Alterada
     printf(":: MATRIZ DEPOIS ::\n");
