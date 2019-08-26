@@ -168,43 +168,80 @@ int main()
     printf(":::::::::::::::::::::\n");
     
     //A partir daqui fazer um menu
-    
-    //Caso troca de linhas e colunas e colunas e linhas
-    //Imprime a Matriz Inicial
-    printf(":: MATRIZ ANTES ::\n");
-    imprimeMatriz(ordem, matriz);
-    printf(":::::::::::::::::::::\n");
-    preencheMatrizTrocandoLinhasColunas (ordem, matriz, matrizAuxiliar);
-    //Imprime a Matriz Alterada
-    printf(":: MATRIZ DEPOIS ::\n");
-    imprimeMatriz(ordem, matriz);
-    printf(":::::::::::::::::::::\n");
-    //Atualiza a Matriz Auxiliar com a nova Matriz alterada
-    atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
-    
-    //Caso substitui caracter
-    //Imprime a Matriz Inicial
-    printf(":: MATRIZ ANTES ::\n");
-    imprimeMatriz(ordem, matriz);
-    printf(":::::::::::::::::::::\n");
-    char caractereAntigo;
-    char caractereNovo;
-    printf("Digite o caractere a ser substituindo: ");
-    scanf("%c", &caractereAntigo);
-    printf("Digite o novo caractere: ");
-    scanf(" %c", &caractereNovo);
-    //caractereAntigo = '2';
-    //caractereNovo = 't';
-    preencheMatrizSubstituindoCaractere (ordem, matriz, caractereAntigo, caractereNovo);
-    //Imprime a Matriz Alterada
-    printf(":: MATRIZ DEPOIS ::\n");
-    imprimeMatriz(ordem, matriz);
-    printf(":::::::::::::::::::::\n");
-    //Atualiza a Matriz Auxiliar com a nova Matriz alterada
-    atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
-    
+    printf("::: Efeitos Disponiveis para a matriz acima :::\n");
+    printf("1 - Matriz com as linhas no lugar das colunas\n");
+    printf("2 - Matriz com as colunas no lugar das linhas\n");
+    printf("3 - Substituir um caractere por outro\n");
+    printf(":::::::::::::::::::::::::::::::::::::::::::::\n\n");
+
+    int efeitos[6];
+    int i = 0;
+    for(i = 0; i < 5; i++)
+    {
+        do{
+            printf("Digite o %dº efeito: ", i+1);
+            scanf("%d", &efeitos[i]);
+        }while(efeitos[i] != 1 && efeitos[i] != 2 && efeitos[i] != 3);
+    }
+    efeitos[5] = 0;
     FILE *arqFinal;
-    geraArquivoComMatrizFinal(arqFinal, ordem, matriz);
-    
+
+    for(i = 0; i < 6; i++)
+    {
+        switch (efeitos[i])
+        {
+            case 1:
+                //Caso troca de linhas e colunas e colunas e linhas
+                //Imprime a Matriz Inicial
+                printf(":: MATRIZ ANTES ::\n");
+                imprimeMatriz(ordem, matriz);
+                printf(":::::::::::::::::::::\n");
+                preencheMatrizTrocandoLinhasColunas (ordem, matriz, matrizAuxiliar);
+                //Imprime a Matriz Alterada
+                printf(":: MATRIZ DEPOIS ::\n");
+                imprimeMatriz(ordem, matriz);
+                printf(":::::::::::::::::::::\n");
+                //Atualiza a Matriz Auxiliar com a nova Matriz alterada
+                atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+                break;
+            case 2:
+                //Caso troca de linhas e colunas e colunas e linhas
+                //Imprime a Matriz Inicial
+                printf(":: MATRIZ ANTES ::\n");
+                imprimeMatriz(ordem, matriz);
+                printf(":::::::::::::::::::::\n");
+                preencheMatrizTrocandoLinhasColunas (ordem, matriz, matrizAuxiliar);
+                //Imprime a Matriz Alterada
+                printf(":: MATRIZ DEPOIS ::\n");
+                imprimeMatriz(ordem, matriz);
+                printf(":::::::::::::::::::::\n");
+                //Atualiza a Matriz Auxiliar com a nova Matriz alterada
+                atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+                break;
+            case 3:
+                //Caso substitui caracter
+                //Imprime a Matriz Inicial
+                printf(":: MATRIZ ANTES ::\n");
+                imprimeMatriz(ordem, matriz);
+                printf(":::::::::::::::::::::\n");
+                char caractereAntigo;
+                char caractereNovo;
+                printf("Digite o caractere a ser substituindo: ");
+                scanf(" %c", &caractereAntigo);
+                printf("Digite o novo caractere: ");
+                scanf(" %c", &caractereNovo);
+                preencheMatrizSubstituindoCaractere (ordem, matriz, caractereAntigo, caractereNovo);
+                //Imprime a Matriz Alterada
+                printf(":: MATRIZ DEPOIS ::\n");
+                imprimeMatriz(ordem, matriz);
+                printf(":::::::::::::::::::::\n");
+                //Atualiza a Matriz Auxiliar com a nova Matriz alterada
+                atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+                break;
+            case 0:
+                geraArquivoComMatrizFinal(arqFinal, ordem, matriz);
+                break;
+        }
+    }
     return 0;
 }
