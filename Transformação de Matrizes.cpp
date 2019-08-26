@@ -108,6 +108,21 @@ void preencheMatrizSubstituindoCaractere (int ordem, char matriz[ordem][ordem], 
     }
 }
 
+void geraArquivoComMatrizFinal (FILE *arqFinal, int ordem, char matriz[ordem][ordem]){
+    int i=0, j=0;
+    arqFinal = fopen("saida.txt", "w");
+    for (i=0; i<ordem; i++)
+    {
+       for (j=0; j<ordem; j++)
+        {
+            fputc(matriz[i][j], arqFinal);
+        } 
+        fputc('\n', arqFinal);
+    }
+    
+    fclose(arqFinal);
+}
+
 int main()
 {
 
@@ -183,6 +198,9 @@ int main()
     printf(":::::::::::::::::::::\n");
     //Atualiza a Matriz Auxiliar com a nova Matriz alterada
     atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
-
+    
+    FILE *arqFinal;
+    geraArquivoComMatrizFinal(arqFinal, ordem, matriz);
+    
     return 0;
 }
