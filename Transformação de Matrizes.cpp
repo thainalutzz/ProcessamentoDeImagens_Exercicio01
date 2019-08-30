@@ -174,19 +174,26 @@ int main()
     printf("3 - Substituir um caractere por outro\n");
     printf(":::::::::::::::::::::::::::::::::::::::::::::\n\n");
 
-    int efeitos[6];
+    int qtdEfeitos = 0;
+    do{
+    printf("Quantos efeitos você deseja aplicar?");
+    scanf("%d", &qtdEfeitos);
+    }while(qtdEfeitos <= 0);
+    
+    int efeitos[qtdEfeitos];
     int i = 0;
-    for(i = 0; i < 5; i++)
+    for(i = 0; i < qtdEfeitos; i++)
     {
         do{
             printf("Digite o %dº efeito: ", i+1);
             scanf("%d", &efeitos[i]);
         }while(efeitos[i] != 1 && efeitos[i] != 2 && efeitos[i] != 3);
     }
-    efeitos[5] = 0;
+    
+    //efeitos[qtdEfeitos-1] = 0;
     FILE *arqFinal;
 
-    for(i = 0; i < 6; i++)
+    for(i = 0; i < qtdEfeitos; i++)
     {
         switch (efeitos[i])
         {
