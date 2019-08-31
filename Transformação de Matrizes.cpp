@@ -160,7 +160,7 @@ void menu (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][orde
         switch (efeitos[i])
         {
             case 1:
-                //Caso troca de linhas e colunas e colunas e linhas
+                printf("\n:: EFEITO TROCA LINHAS POR COLUNAS ::\n");
                 //Imprime a Matriz Inicial
                 printf(":: MATRIZ ANTES ::\n");
                 imprimeMatriz(ordem, matriz);
@@ -176,7 +176,7 @@ void menu (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][orde
                 geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i+1);
                 break;
             case 2:
-                //Caso troca de linhas e colunas e colunas e linhas
+                printf("\n:: EFEITO TROCA COLUNAS POR LINHAS ::\n");
                 //Imprime a Matriz Inicial
                 printf(":: MATRIZ ANTES ::\n");
                 imprimeMatriz(ordem, matriz);
@@ -192,17 +192,18 @@ void menu (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][orde
                 geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i+1);
                 break;
             case 3:
-                //Caso substitui caracter
-                //Imprime a Matriz Inicial
-                printf(":: MATRIZ ANTES ::\n");
-                imprimeMatriz(ordem, matriz);
-                printf(":::::::::::::::::::::\n");
+                printf("\n:: EFEITO SUBSTITUI CARACTERE POR OUTRO ::\n");
                 char caractereAntigo;
                 char caractereNovo;
                 printf("Digite o caractere a ser substituindo: ");
                 scanf(" %c", &caractereAntigo);
                 printf("Digite o novo caractere: ");
                 scanf(" %c", &caractereNovo);
+                //Imprime a Matriz Inicial
+                printf(":: MATRIZ ANTES ::\n");
+                imprimeMatriz(ordem, matriz);
+                printf(":::::::::::::::::::::\n");
+                //Troca o caractereAntigo pelo caractereNovo
                 preencheMatrizSubstituindoCaractere (ordem, matriz, caractereAntigo, caractereNovo);
                 //Imprime a Matriz Alterada
                 printf(":: MATRIZ DEPOIS ::\n");
