@@ -130,52 +130,8 @@ void geraArquivoComMatrizFinal (FILE *arqFinal, int ordem, char matriz[ordem][or
     fclose(arqFinal);
 }
 
-int main()
-{
-
-    //Abre o arquivo com a matriz inicial
-    FILE *arq;
-    arq = fopen("entrada.txt","r");
-    if(arq == NULL)
-    {
-     printf("Erro, nao foi possivel abrir o arquivo\n");
-     return 0;
-    }
-    
-    //Conta a quantidade de elementos na matriz
-    int qtdElementos = 0;
-    qtdElementos = calculaQtdElementosArquivo(arq, qtdElementos);
-    
-    //Fecha o aquivo com a matriz inicial
-    fclose(arq);
-    
-    //Verifica se a matriz eh quadrada e valida a ordem
-    int ordem = 0;
-    ordem = calculaOrdemMatriz(qtdElementos, ordem);
-    if(ordem == 0){
-        printf("O arquivo nao contem uma matriz quadrada.");
-        return 0;
-    }
-    if(ordem < 10 || ordem > 20){
-        printf("A matriz quadrada do arquivo deve ser de ordem entre 10 e 20.");
-        return 0;
-    }
-    
-    //Preenche a Matriz Inicial
-    char matriz[ordem][ordem];
-    matriz[ordem][ordem] = preencheMatrizComArquivo(arq, ordem, matriz);
-    
-    //Cria uma Matriz Axiliar igual a Matriz Inicial
-    char matrizAuxiliar[ordem][ordem];
-    atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
-    
-    //Imprime a Matriz Inicial
-    printf(":: MATRIZ ORIGINAL ::\n");
-    imprimeMatriz(ordem, matriz);
-    printf(":::::::::::::::::::::\n");
-    
-    //A partir daqui fazer um menu
-    printf("::: Efeitos Disponiveis para a matriz acima :::\n");
+void menu (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][ordem]){
+    printf("::: Efeitos Disponiveis para a Matriz :::\n");
     printf("1 - Matriz com as linhas no lugar das colunas\n");
     printf("2 - Matriz com as colunas no lugar das linhas\n");
     printf("3 - Substituir um caractere por outro\n");
@@ -262,5 +218,54 @@ int main()
                 break;
         }
     }
+}
+
+int main()
+{
+
+    //Abre o arquivo com a matriz inicial
+    FILE *arq;
+    arq = fopen("entrada.txt","r");
+    if(arq == NULL)
+    {
+     printf("Erro, nao foi possivel abrir o arquivo\n");
+     return 0;
+    }
+    
+    //Conta a quantidade de elementos na matriz
+    int qtdElementos = 0;
+    qtdElementos = calculaQtdElementosArquivo(arq, qtdElementos);
+    
+    //Fecha o aquivo com a matriz inicial
+    fclose(arq);
+    
+    //Verifica se a matriz eh quadrada e valida a ordem
+    int ordem = 0;
+    ordem = calculaOrdemMatriz(qtdElementos, ordem);
+    if(ordem == 0){
+        printf("O arquivo nao contem uma matriz quadrada.");
+        return 0;
+    }
+    if(ordem < 10 || ordem > 20){
+        printf("A matriz quadrada do arquivo deve ser de ordem entre 10 e 20.");
+        return 0;
+    }
+    
+    //Preenche a Matriz Inicial
+    char matriz[ordem][ordem];
+    matriz[ordem][ordem] = preencheMatrizComArquivo(arq, ordem, matriz);
+    
+    //Cria uma Matriz Axiliar igual a Matriz Inicial
+    char matrizAuxiliar[ordem][ordem];
+    atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+    
+    //Imprime a Matriz Inicial
+    printf(":: MATRIZ ORIGINAL ::\n");
+    imprimeMatriz(ordem, matriz);
+    printf(":::::::::::::::::::::\n");
+    
+    //MENU
+    menu(ordem, matriz, matrizAuxiliar);
+    
     return 0;
 }
