@@ -108,9 +108,16 @@ void preencheMatrizSubstituindoCaractere (int ordem, char matriz[ordem][ordem], 
     }
 }
 
-void geraArquivoComMatrizFinal (FILE *arqFinal, int ordem, char matriz[ordem][ordem]){
+void geraArquivoComMatrizFinal (FILE *arqFinal, int ordem, char matriz[ordem][ordem], int numEfeito){
     int i=0, j=0;
-    arqFinal = fopen("saida.txt", "w");
+    
+    char efeito[100] = "saidaEfeito";
+    char num[3];
+    sprintf (num, "%d", numEfeito);
+    strcat(efeito, num);
+    strcat(efeito, ".txt");
+    
+    arqFinal = fopen(efeito, "w");
     for (i=0; i<ordem; i++)
     {
        for (j=0; j<ordem; j++)
@@ -176,7 +183,7 @@ int main()
 
     int qtdEfeitos = 0;
     do{
-    printf("Quantos efeitos você deseja aplicar?");
+    printf("Quantos efeitos você deseja aplicar? ");
     scanf("%d", &qtdEfeitos);
     }while(qtdEfeitos <= 0);
     
@@ -190,7 +197,6 @@ int main()
         }while(efeitos[i] != 1 && efeitos[i] != 2 && efeitos[i] != 3);
     }
     
-    //efeitos[qtdEfeitos-1] = 0;
     FILE *arqFinal;
 
     for(i = 0; i < qtdEfeitos; i++)
@@ -210,6 +216,8 @@ int main()
                 printf(":::::::::::::::::::::\n");
                 //Atualiza a Matriz Auxiliar com a nova Matriz alterada
                 atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+                //Gera arquivo com a aplicação do efeito
+                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i+1);
                 break;
             case 2:
                 //Caso troca de linhas e colunas e colunas e linhas
@@ -224,6 +232,8 @@ int main()
                 printf(":::::::::::::::::::::\n");
                 //Atualiza a Matriz Auxiliar com a nova Matriz alterada
                 atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+                //Gera arquivo com a aplicação do efeito
+                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i+1);
                 break;
             case 3:
                 //Caso substitui caracter
@@ -244,9 +254,11 @@ int main()
                 printf(":::::::::::::::::::::\n");
                 //Atualiza a Matriz Auxiliar com a nova Matriz alterada
                 atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+                //Gera arquivo com a aplicação do efeito
+                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i+1);
                 break;
             case 0:
-                geraArquivoComMatrizFinal(arqFinal, ordem, matriz);
+                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i);
                 break;
         }
     }
