@@ -33,7 +33,6 @@ void imprimeMatriz (int ordem, char matriz[ordem][ordem]){
         for (j=0; j<ordem; j++)
         {
             putchar(matriz[i][j]);
-            //printf("%c", matrizInicial[i][j]);
         }
         printf("\n");
     }
