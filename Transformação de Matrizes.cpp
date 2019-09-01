@@ -109,7 +109,7 @@ void preencheMatrizSubstituindoCaractere (int ordem, char matriz[ordem][ordem], 
 
 void geraArquivoComMatrizFinal (FILE *arqFinal, int ordem, char matriz[ordem][ordem], int numEfeito){
     int i=0, j=0;
-    
+
     char efeito[100] = "saidaEfeito";
     char num[3];
     sprintf (num, "%d", numEfeito);
@@ -117,6 +117,7 @@ void geraArquivoComMatrizFinal (FILE *arqFinal, int ordem, char matriz[ordem][or
     strcat(efeito, ".txt");
     
     arqFinal = fopen(efeito, "w");
+
     for (i=0; i<ordem; i++)
     {
        for (j=0; j<ordem; j++)
@@ -125,38 +126,27 @@ void geraArquivoComMatrizFinal (FILE *arqFinal, int ordem, char matriz[ordem][or
         } 
         fputc('\n', arqFinal);
     }
-    
     fclose(arqFinal);
 }
 
 void menu (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][ordem]){
-    printf("::: Efeitos Disponiveis para a Matriz :::\n");
-    printf("1 - Matriz com as linhas no lugar das colunas\n");
-    printf("2 - Matriz com as colunas no lugar das linhas\n");
-    printf("3 - Substituir um caractere por outro\n");
-    printf(":::::::::::::::::::::::::::::::::::::::::::::\n\n");
-
-    int qtdEfeitos = 0;
+    int efeito = 0, qtdEfeitos = 0;
     do{
-    printf("Quantos efeitos você deseja aplicar? ");
-    scanf("%d", &qtdEfeitos);
-    }while(qtdEfeitos <= 0);
-    
-    int efeitos[qtdEfeitos];
-    int i = 0;
-    for(i = 0; i < qtdEfeitos; i++)
-    {
-        do{
-            printf("Digite o %dº efeito: ", i+1);
-            scanf("%d", &efeitos[i]);
-        }while(efeitos[i] != 1 && efeitos[i] != 2 && efeitos[i] != 3);
-    }
-    
-    FILE *arqFinal;
+        FILE *arqFinal;
+        printf("::: Efeitos Disponiveis para a Matriz :::\n");
+        printf("1 - Matriz com as linhas no lugar das colunas\n");
+        printf("2 - Matriz com as colunas no lugar das linhas\n");
+        printf("3 - Substituir um caractere por outro\n");
+        printf("0 - Sair\n");
+        printf(":::::::::::::::::::::::::::::::::::::::::::::\n\n");
+        
+        do
+        {
+            printf("Digite o numero do efeito desejado: ");
+            scanf("%d", &efeito);
+        }while(efeito != 1 && efeito != 2 && efeito != 3 && efeito != 0);
 
-    for(i = 0; i < qtdEfeitos; i++)
-    {
-        switch (efeitos[i])
+        switch (efeito)
         {
             case 1:
                 printf("\n:: EFEITO TROCA LINHAS POR COLUNAS ::\n");
@@ -171,8 +161,10 @@ void menu (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][orde
                 printf(":::::::::::::::::::::\n");
                 //Atualiza a Matriz Auxiliar com a nova Matriz alterada
                 atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+                //Contador de Efeitos aumenta em 1
+                qtdEfeitos++;
                 //Gera arquivo com a aplicação do efeito
-                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i+1);
+                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, qtdEfeitos);
                 break;
             case 2:
                 printf("\n:: EFEITO TROCA COLUNAS POR LINHAS ::\n");
@@ -187,8 +179,10 @@ void menu (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][orde
                 printf(":::::::::::::::::::::\n");
                 //Atualiza a Matriz Auxiliar com a nova Matriz alterada
                 atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+                //Contador de Efeitos aumenta em 1
+                qtdEfeitos++;
                 //Gera arquivo com a aplicação do efeito
-                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i+1);
+                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, qtdEfeitos);
                 break;
             case 3:
                 printf("\n:: EFEITO SUBSTITUI CARACTERE POR OUTRO ::\n");
@@ -210,14 +204,25 @@ void menu (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][orde
                 printf(":::::::::::::::::::::\n");
                 //Atualiza a Matriz Auxiliar com a nova Matriz alterada
                 atualizaMatrizAuxiliar(ordem, matriz, matrizAuxiliar);
+                //Contador de Efeitos aumenta em 1
+                qtdEfeitos++;
                 //Gera arquivo com a aplicação do efeito
-                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i+1);
+                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, qtdEfeitos);
                 break;
             case 0:
-                geraArquivoComMatrizFinal(arqFinal, ordem, matriz, i);
+                if(qtdEfeitos > 0)
+                {
+                    printf("Gerados %d arquivo(s) com os efeito(s) aplicado(s)!", qtdEfeitos);
+                }
+                else
+                {
+                    printf("Nenhum efeito aplicado!");
+                }
+
                 break;
         }
-    }
+    }while(efeito != 0);
+
 }
 
 int main()
