@@ -212,7 +212,7 @@ void menu (int ordem, char matriz[ordem][ordem], char matrizAuxiliar[ordem][orde
             case 0:
                 if(qtdEfeitos > 0)
                 {
-                    printf("Gerados %d arquivo(s) com os efeito(s) aplicado(s)!", qtdEfeitos);
+                    printf("Gerado(s) %d arquivo(s) com os efeito(s) aplicado(s)!", qtdEfeitos);
                 }
                 else
                 {
